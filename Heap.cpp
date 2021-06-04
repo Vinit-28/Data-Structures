@@ -25,7 +25,10 @@ class MyHeap{
         void push(Datatype data);
         bool pop();
         int size();
+        int search_data(Datatype data);
         Datatype top();
+        Datatype child_of(Datatype child);
+        Datatype get_child(Datatype parent, string child_name="left");
 
 };
 
@@ -207,6 +210,54 @@ Datatype MyHeap<Datatype>::top(){
 
 
 
+// Member Function to get the total length/size of the heap //
+template<class Datatype>
+int MyHeap<Datatype>::size(){
+
+    return length;
+}
+
+
+
+// Member Function to search return the index of an particular data //
+template<class Datatype>
+int MyHeap<Datatype>::search_data(Datatype data){
+
+    for(int i=0; i<size(); i++){
+
+        if( heap[i] == data )
+            return i;
+    }
+    return -1;
+}
+
+
+
+// Member Function to get the parent data of a particular child in the heap //
+template<class Datatype>
+Datatype MyHeap<Datatype>::child_of(Datatype child){
+
+    int index_of_child = search_data(child);
+    
+    return( heap[((index_of_child-1)/2)] );
+}
+
+
+
+// Member Function to get the data of child node of a particular node //
+template<class Datatype>
+Datatype MyHeap<Datatype>::get_child(Datatype parent, string child_name){
+
+    int index_of_parent = search_data(parent);
+    
+    if( child_name == "left" )
+        return( heap[ ( ( index_of_parent*2 ) + 1 ) ] );
+    
+    return( heap[ ( ( index_of_parent*2 ) + 2 ) ] );
+} 
+
+
+
 // End of Class MyHepa's Member Functions Definition //
 
 
@@ -214,7 +265,7 @@ Datatype MyHeap<Datatype>::top(){
 // Demontrating the use of the above data structure //
 int main(){
 
-    MyHeap<int> heap('<');
+    MyHeap<int> heap('>');
 
     heap.push(10);
     heap.push(20);
@@ -222,9 +273,13 @@ int main(){
     heap.push(5);
     heap.push(50);
 
-    cout<<heap.top()<<endl;
+    cout<<"Top Element -> "<<heap.top()<<endl;
     heap.pop();
-    cout<<heap.top()<<endl;
+    cout<<"Top Element after Pop Operation -> "<<heap.top()<<endl;
+
+    cout<<"Data 10 is the child of -> Data "<<heap.child_of(10)<<endl;
+    cout<<"Data 30's left child -> "<<heap.get_child(30,"left")<<endl;
+    cout<<"Data 30's right child -> "<<heap.get_child(30,"right")<<endl;
     
     return 0;
 }
